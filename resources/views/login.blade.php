@@ -18,13 +18,14 @@
         <h3>--ログイン--</h3>
         <div class="login-content">
             <form action="put_login" method="post">
+                @csrf
                 <div class="form-group">
                     <p>社員コード</p>
-                    <input class="login-input" type="text" name="shain_code" value="{{$shain_code}}">
+                    <input class="login-input" type="text" name="shain_code" value="{{$shain_code}}" required>
                 </div>
                 <div class="form-group">
                     <p>パスワード</p>
-                    <input class="login-input" type="password" name="pasword" value="{{$password}}">
+                    <input class="login-input" type="password" name="password" value="{{$password}}" required>
                 </div>
                 <div class="form-group">
                     <p>店舗</p>
@@ -38,7 +39,6 @@
                     </select>
                 </div>
                 <div class="component">
-                    <x-select-box />
                 </div>
                 <button type="submit">ログイン</button>
             </form>

@@ -18,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/','LoginController@index');
+
+Route::post('/put_login', 'LoginController@putLogin');
+
+Route::get('/menu', 'MenuController@index');
+
+Route::get('/mst_shain', 'ShainController@index');
