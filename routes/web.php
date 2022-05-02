@@ -24,3 +24,12 @@ Route::post('/put_login', 'LoginController@putLogin');
 Route::get('/menu', 'MenuController@index');
 
 Route::get('/mst_shain', 'ShainController@index');
+
+Route::post('/serchShain', 'ShainController@kensaku');
+
+Route::get('/serchShain', 'ShainController@kensaku');
+
+Route::post('/shainregist', 'ShainController@disNewRegist');
+Route::post('/checkshaindata', 'ShainController@checkShainData');
+Route::post('/exeinstshain', 'ShainController@exeInstShain');
+
