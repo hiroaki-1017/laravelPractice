@@ -47,11 +47,29 @@ class ShainController extends Controller
         return view("shainRegist", $shain->data);
     }
 
-    public function checkShainData(Request $request)
+    public function dispEditRegist(Request $request)
     {
+        //Sahinのインスタンス化
         $shain = new Shain();
         $shain->makeKengenList();
-        
+
+        //該当のデータを取得
+        $shain->data['shain_code'] = $request->get('shain_code');
+        $shain->getShainData();
+
+        //動的項目を設定して登録画面を表示
+        $shain->data['title'] = "社員マスタ編集登録";
+        $shain->data['action'] = "checkshaindata/edit";
+
+        return view('shainRegist', $shain->data);
+    }
+
+    public function checkShainData($edit = "", Request $request)
+    {
+        // echo $edit;
+        $shain = new Shain();
+        $shain->makeKengenList();
+
         $shain->data["shain_code"] = $request->get("shain_code");
         $shain->data["shain_name"] = $request->get("shain_name");
         $shain->data["shain_name_kana"] = $request->get("shain_name_kana");
@@ -61,21 +79,28 @@ class ShainController extends Controller
         $shain->data["mail_address"] = $request->get("mail_address");
         $shain->data["kengen_code"] = $request->get("kengen_code");
         $shain->data["delete_flg"] = $request->get("delete_flg");
+        $shain->data["edit"] = $edit;
 
         if (!$shain->check()) {
             $shain->data["title"] = "社員マスタ新規登録";
             $shain->data["action"] = "checkshaindata";
             return view('shainRegist', $shain->data);
         }
-        
-        //確認画面へ
-        $shain->data["title"] = "社員データ登録確認";
-        $shain->data["action"] = "exeinstshain";
 
-        return view("shainConfilm",$shain->data);
+        //確認画面へ
+        if ($edit == "") {
+            $shain->data["title"] = "社員データ登録確認";
+            $shain->data["action"] = "exeinstshain";
+        } else {
+            $shain->data["title"] = "社員データ編集登録確認";
+            $shain->data["action"] = "/exeupdshain";
+        }
+
+        return view("shainConfilm", $shain->data);
     }
 
-    public function exeInstShain(Request $request) {
+    public function exeInstShain(Request $request)
+    {
         $session = $request->getSession();
         $shain = new Shain();
 
@@ -88,13 +113,32 @@ class ShainController extends Controller
         $shain->kengen_code = $request->get("kengen_code");
         $shain->biko = "";
         $shain->delete_flg = $request->get("delete_flg");
-        $shain->created_on = date('Y-m-d H:i:s');        
+        $shain->created_on = date('Y-m-d H:i:s');
         $shain->created_by = $session->get("login_shain_code");
         $shain->updated_on = date('Y-m-d H:i:s');
         $shain->updated_by = $session->get("login_shain_code");
 
 
         $shain->save();
+
+        return view("shainComplete");
+    }
+
+    public function exeUpdShain(Request $request) {
+        // session
+        $session = $request->getSession();
+        // 画面データをモデルに継承
+        $param['shain_name'] = $request->get("shain_name");
+        $param['shain_name_kana'] = $request->get("shain_name_kana");
+        $param['password'] = $request->get("password");
+        $param['login_flg'] = $request->get("login_flg");
+        $param['mail_address'] = $request->get("mail_address");
+        $param['kengen_code'] = $request->get("kengen_code");
+        $param['delete_flg'] = $request->get("delete_flg");
+        $param['updated_on'] = date("Y-m-d H:i:s");
+        $param['updated_by'] = $session->get("login_shain_code");
+
+        Shain::where("shain_code",$request->get("shain_code"))->update($param);
 
         return view("shainComplete");
     }

@@ -21,7 +21,7 @@ Route::get('/','LoginController@index');
 
 Route::post('/put_login', 'LoginController@putLogin');
 
-Route::get('/menu', 'MenuController@index');
+Route::get('/menu', 'MenuController@index')->name('/menu');
 
 Route::get('/mst_shain', 'ShainController@index');
 
@@ -30,6 +30,9 @@ Route::post('/serchShain', 'ShainController@kensaku');
 Route::get('/serchShain', 'ShainController@kensaku');
 
 Route::post('/shainregist', 'ShainController@disNewRegist');
-Route::post('/checkshaindata', 'ShainController@checkShainData');
+Route::post('/checkshaindata/{edit}', 'ShainController@checkShainData');
 Route::post('/exeinstshain', 'ShainController@exeInstShain');
+
+Route::post('/shainedit','ShainController@dispEditRegist');
+Route::post('/exeupdshain','ShainController@exeUpdShain')->name('/exeupdshain');
 

@@ -5,7 +5,7 @@
 <h3 class="text-3xl font-bold text-center my-5">{{ $title }}</h3>
 <h4 class="text-2xl text-center my-3"> --この内容で登録します。よろしければ登録ボタンを押下してください。--</h4>
 <div class="w-7/12 mx-auto p-3 bg-blue-100">
-    <form action="{{ $action }}" method="post">
+    <form action="{{ route($action) }}" method="post">
         @csrf
         <table class="text-xl mx-fixed mx-auto">
             <tr class="h-10">
