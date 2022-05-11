@@ -36,3 +36,6 @@ Route::post('/exeinstshain', 'ShainController@exeInstShain');
 Route::post('/shainedit','ShainController@dispEditRegist');
 Route::post('/exeupdshain','ShainController@exeUpdShain')->name('/exeupdshain');
 
+Route::get('/hatchu','HatchuController@index');
+Route::post('/searchorder','HatchuController@search');
+Route::get('/searchorder','HatchuController@search');
