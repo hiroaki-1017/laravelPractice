@@ -24,19 +24,55 @@ class Hatchu extends Model
         "yakuhin" => "",
         "torihikisaki" => "",
         "page" => 0,
-        "list" => array()
+        "list" => array(),
+        "hatchu_seq" => "",
+        "nendo" => "",
+        "tenpo_code" => "",
+        "torihikisaki_code" => "",
+        "torihikisaki_name" => "",
+        "jan_code" => "",
+        "yj_code" => "",
+        "hanbai_name" => "",
+        "hatchu_su" => "",
+        "shuryo_kbn" => "",
+        "nyuka_su" => "",
+        "hatchu_kbn" => "",
+        "hatchu_date" => "",
+        "shori_kbn" => "",
+        "shogo_flg" => "",
+        "delete_flg" => "",
+        "biko" => "",
+        "login_shain_code" => "",
+        "title" => "",
+        "subtitle" => "",
+        "action" => "",
+        "button_name" => "",
+        "cancel_action" => "",
+        "msg" => "",
+        "login_kengen_code" => "",
+        "txtComplete" => ""
     );
 
     public function getList()
     {
         $result = self::from('hatchu as h')
             ->join('mst_torihikisaki as mt', 'h.torihikisaki_code', 'mt.torihikisaki_code')
-            ->join('mst_torihikisaki as mt2', 'h.tenpo_code','mt2.torihikisaki_code')
+            ->join('mst_torihikisaki as mt2', 'h.tenpo_code', 'mt2.torihikisaki_code')
             ->join('mst_shohin as ms', 'h.jan_code', 'ms.jan_code')
-            ->select('h.hatchu_seq','mt.torihikisaki_name',
-                    'mt2.torihikisaki_name as tenpo_name','h.hatchu_date','h.yakuhin_kbn',
-                    'ms.hanbai_name','ms.hoso_gryo','h.hatchu_su','h.suryo_kbn',
-                    'h.hatchu_kbn','h.shogo_flg','h.shori_kbn');
+            ->select(
+                'h.hatchu_seq',
+                'mt.torihikisaki_name',
+                'mt2.torihikisaki_name as tenpo_name',
+                'h.hatchu_date',
+                'h.yakuhin_kbn',
+                'ms.hanbai_name',
+                'ms.hoso_gryo',
+                'h.hatchu_su',
+                'h.suryo_kbn',
+                'h.hatchu_kbn',
+                'h.shogo_flg',
+                'h.shori_kbn'
+            );
         //yakuhinn_kbn
         if ($this->data['yakuhin_kbn'] != '') {
             $result->where('h.yakuhin_kbn', $this->data['yakuhin_kbn']);
@@ -80,10 +116,10 @@ class Hatchu extends Model
 
         //マスター照合
         if ($this->data['shogo_flg'] != '') {
-                $result->where('h.shogo_flg', $this->data['shogo_flg']);
+            $result->where('h.shogo_flg', $this->data['shogo_flg']);
         }
 
-        $result->orderBy('h.hatchu_date','desc');
+        $result->orderBy('h.hatchu_date', 'desc');
 
         $this->data['list'] = $result->paginate(25);
     }
