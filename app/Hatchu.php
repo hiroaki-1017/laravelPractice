@@ -123,4 +123,46 @@ class Hatchu extends Model
 
         $this->data['list'] = $result->paginate(25);
     }
+
+    #葉中登録処理モデル
+    public function insertHatchuData()
+    {
+        //発注日から年度を抽出(10月決算を想定)
+        $arrDate = explode('-', $this->data["hatchu_date"]);
+        $nendo = $arrDate[0];
+        $month = $arrDate[1];
+        if ($month <= 10) $nendo--;
+
+        //その年度のmax連番を抽出、そこから新連番を作る
+        $seq = self::where('nendo', $nendo)->count();
+        $seq++;
+
+        $new_seq = 'h' . $nendo . sprintf('%011d', $seq);
+        //echo $new_seq;
+
+        //登録
+        $execute = new Hatchu();
+        $execute->hatchu_seq = $new_seq;
+        $execute->nendo = $nendo;
+        $execute->tenpo_code = $this->data["tenpo_code"];
+        $execute->torihikisaki_code = $this->data["torihikisaki_code"];
+        $execute->yakuhin_kbn = $this->data["yakuhin_kbn"];
+        $execute->jan_code = $this->data["jan_code"];
+        $execute->yj_code = $this->data["yj_code"];
+        $execute->toitsu_code = "";
+        $execute->hatchu_su = $this->data["hatchu_su"];
+        $execute->suryo_kbn = $this->data["suryo_kbn"];
+        $execute->nyuka_su = $this->data["nyuka_su"];
+        $execute->hatchu_kbn = $this->data["hatchu_kbn"];
+        $execute->hatchu_date = $this->data["hatchu_date"];
+        $execute->shori_kbn = $this->data["shori_kbn"];
+        $execute->shogo_flg = $this->data["shogo_flg"];
+        $execute->delete_flg = "0";
+        $execute->biko = $this->data["biko"];
+        $execute->created_on = date('Y-m-d H:i:s');
+        $execute->created_by = $this->data["login_shain_code"];
+        $execute->updated_on = date('Y-m-d H:i:s');
+        $execute->updated_by = $this->data["login_shain_code"];
+        $execute->save();
+    }
 }
