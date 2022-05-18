@@ -165,4 +165,60 @@ class Hatchu extends Model
         $execute->updated_by = $this->data["login_shain_code"];
         $execute->save();
     }
+
+    public function getHatchuData()
+    {
+        $list = self::from('hatchu as h')
+            ->join('mst_torihikisaki as mt', 'h.torihikisaki_code', 'mt.torihikisaki_code')
+            ->join('mst_shohin as ms', 'h.jan_code', 'ms.jan_code')
+            ->where('h.hatchu_seq', $this->data['hatchu_seq'])
+            ->select('h.*', 'mt.torihikisaki_name', 'ms.hanbai_name')->first();
+
+        $this->data['hatchu_seq'] = $list->hatchu_seq;
+        $this->data['nyuka_su'] = $list->nyuka_su;
+        $this->data['tenpo_code'] = $list->tenpo_code;
+        $this->data['hatchu_kbn'] = $list->hatchu_kbn;
+        $this->data['torihikisaki_name'] = $list->torihikisaki_name;
+        $this->data['torihikisaki_code'] = $list->torihikisaki_code;
+        $this->data['hatchu_date'] = substr($list->hatchu_date, 0, 10);
+        $this->data['hanbai_name'] = $list->hanbai_name;
+        $this->data['yj_code'] = $list->yj_code;
+        $this->data['yakuhin_kbn'] = $list->yakuhin_kbn;
+        $this->data['jan_code'] = $list->jan_code;
+        $this->data['shori_kbn'] = $list->shori_kbn;
+        $this->data['shogo_flg'] = $list->shogo_flg;
+        $this->data['suryo_kbn'] = $list->suryo_flg;
+        $this->data['biko'] = $list->biko;
+        $this->data['hatchu_su'] = $list->hatchu_su;
+    }
+
+    public function updHatchuData()
+    {
+        //年度の割り出し直し(発注日を変えられたかもしれないから)
+        $arrDate = explode('-', $this->data['hatchu_date']);
+        $nendo = $arrDate[0];
+        $month = $arrDate[1];
+        if ($month <= 10) $nendo--;
+
+        $param = array(
+            "nendo" => $nendo,
+            "nyuka_su" => $this->data["nyuka_su"],
+            "tenpo_code" => $this->data["tenpo_code"],
+            "torihikisaki_code" => $this->data["torihikisaki_code"],
+            "yakuhin_kbn" => $this->data["yakuhin_kbn"],
+            "jan_code" => $this->data["jan_code"],
+            "yj_code" => $this->data["yj_code"],
+            "hatchu_su" => $this->data["hatchu_su"],
+            "suryo_kbn" => $this->data["suryo_kbn"],
+            "hatchu_kbn" => $this->data["hatchu_kbn"],
+            "hatchu_date" => $this->data["hatchu_date"],
+            "shori_kbn" => $this->data["shori_kbn"],
+            "shogo_flg" => $this->data["shogo_flg"],
+            "biko" => $this->data["biko"],
+            "updated_on" => date('Y-m-d H:i:s'),
+            "updated_by" => $this->data['login_shain_code']
+        );
+
+        self::where('hatchu_seq', $this->data['hatchu_seq'])->update($param);
+    }
 }

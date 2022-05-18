@@ -151,12 +151,14 @@
             </td>
             <td class="border">
                 <form action="hatchuedit" method="post">
+                    @csrf
                     <input type="hidden" name="hatchu_seq" value="{{$row->hatchu_seq}}">
                     <button type="submit" class="border border-black bg-gray-300 hover:bg-gray-400 py-2 px-3">編集</button>
                 </form>
             </td>
             <td class="border">
                 <form action="hatchudel" method="post">
+                    @csrf
                     <input type="hidden" name="hatchu_seq" th:value="{{$row->hatchu_seq}}">
                     <button type="submit" class="border border-black bg-gray-300 hover:bg-gray-400 py-2 px-3">削除</button>
                 </form>

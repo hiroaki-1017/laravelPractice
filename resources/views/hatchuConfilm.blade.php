@@ -5,7 +5,7 @@
 <h3 class="text-2xl font-bold text-center my-2">{{ $subtitle }}</h3>
 
 <div class="w-6/12 mx-auto p-3 bg-blue-100">
-    <form action="{{ $action }}" method="post">
+    <form action="{{ url($action) }}" method="post">
         @csrf
         <table class="text-xl mx-fixed mx-auto">
             <tr class="h-10">

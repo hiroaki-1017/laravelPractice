@@ -71,7 +71,7 @@
                 <th class="text-left">薬品</th>
                 <td class="text-left">
                     <input type="text" name="hanbai_name" id="hanbai_name" value="{{ old('hanbai_name',$hanbai_name) }}">
-                    <input type="hidden" name="yj_code" id="yj_code" value="{{ old('yj_code',$hanbai_name) }}">
+                    <input type="hidden" name="yj_code" id="yj_code" value="{{ old('yj_code',$yj_code) }}">
                     <input type="hidden" name="yakuhin_kbn" id="yakuhin_kbn" value="{{ old('yakuhin_kbn',$yakuhin_kbn) }}">
                 </td>
                 <td class="text-left">

@@ -52,3 +52,9 @@ Route::post('/yakuhingetpage','HatchuController@yakuhinGetPage');
 Route::post('/yakuhingetlist','HatchuController@yakuhinGetList');
 
 Route::post('/inserthatchudata','HatchuController@insertHatchuData');
+
+
+Route::post('/hatchuedit','HatchuController@hatchuEdit')->name('/hatchuedit');
+Route::get('/hatchuedit','HatchuController@hatchuConfilm');
+
+Route::post('/updhatchudata','HatchuController@updHatchuData')->name('/updhatchudata');

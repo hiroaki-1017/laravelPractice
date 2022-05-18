@@ -82,13 +82,11 @@ class HatchuController extends Controller
             $hatchu->data["subtitle"] = "この内容で登録します。よろしければ登録ボタンを押下してください。";
             $hatchu->data["button_name"] = "登録";
             $hatchu->data["action"] = "inserthatchudata";
-            $hatchu->data["edit"] = "new";
         } else if ($edit == "edit") {
             $hatchu->data["title"] = "発注データ編集登録確認";
             $hatchu->data["subtitle"] = "この内容で登録します。よろしければ登録ボタンを押下してください。";
             $hatchu->data["button_name"] = "登録";
             $hatchu->data["action"] = "updhatchudata";
-            $hatchu->data["edit"] = "edit";
         }
 
         return view('hatchuConfilm', $hatchu->data);
@@ -158,6 +156,38 @@ class HatchuController extends Controller
         $data = array(
             "complete_msg" => "新規登録",
             "flg" => true
+        );
+        return view('hatchuComplete', $data);
+    }
+
+    public function hatchuEdit(Request $request)
+    {
+        $hatchu = new Hatchu();
+        if (!empty($_POST["hatchu_seq"])) {
+            $hatchu->data["hatchu_seq"] = $request->hatchu_seq;
+            $hatchu->getHatchuData();
+        }
+        $hatchu->data["tenpo_list"] = Torihikisaki::where('torihikisaki_kbn', '2')
+            ->where('delete_flg', '0')->get();
+
+        $hatchu->data["title"] = "発注データ編集登録";
+        $hatchu->data["action"] = "hatchuconfilm";
+        //print_r($hatchu->data);
+
+        return view('hatchuRegist', $hatchu->data);
+    }
+
+    public function updHatchuData(Request $request)
+    {
+        $session = $request->getSession();
+        $hatchu = new Hatchu();
+        $hatchu->data = $request->all();
+        $hatchu->data["login_shain_code"] = $session->get("login_shain_code");
+        $hatchu->updHatchuData();
+
+        $data = array(
+            "complete_msg" => "編集登録",
+            "flg" => false
         );
         return view('hatchuComplete', $data);
     }
